@@ -38,7 +38,9 @@ Please provide the output in the following JSON format:
             "answer": "..."
         }},
         ... (5 questions)
-    ]
+    ],
+    "tags": ["Tag1", "Tag2", "Tag3"],
+    "estimated_completion_time": "e.g., 2 weeks"
 }}
 Ensure the code is functional, commented, and uses the specified tech stack.
 """

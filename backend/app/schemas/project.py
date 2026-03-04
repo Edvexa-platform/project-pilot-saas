@@ -17,6 +17,8 @@ class ProjectResponse(BaseModel):
     tech_stack_details: Dict[str, str] = {}
     files: List[Dict[str, str]] = []
     viva_questions: List[Dict[str, str]] = []
+    tags: List[str] = []
+    estimated_completion_time: Optional[str] = ""
     # Optional fields for compatibility if needed
     features: Optional[List[str]] = []
     tech_stack: Optional[List[str]] = []
