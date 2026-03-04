@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-    darkMode: ["class"],
+    darkMode: "class",
     content: [
         "./app/**/*.{js,ts,jsx,tsx,mdx}",
         "./pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -71,13 +71,27 @@ module.exports = {
                 "fade-in-up": {
                     "0%": { opacity: "0", transform: "translateY(10px)" },
                     "100%": { opacity: "1", transform: "translateY(0)" }
+                },
+                "shimmer": {
+                    "0%": { transform: "translateX(-100%)" },
+                    "100%": { transform: "translateX(100%)" }
+                },
+                "float": {
+                    "0%, 100%": { transform: "translateY(0)" },
+                    "50%": { transform: "translateY(-20px)" }
                 }
             },
             animation: {
                 "accordion-down": "accordion-down 0.2s ease-out",
                 "accordion-up": "accordion-up 0.2s ease-out",
                 "fade-in": "fade-in 0.5s ease-out",
-                "fade-in-up": "fade-in-up 0.5s ease-out forwards"
+                "fade-in-up": "fade-in-up 0.5s ease-out forwards",
+                "shimmer": "shimmer 2.5s infinite linear",
+                "float": "float 6s ease-in-out infinite",
+            },
+            transitionTimingFunction: {
+                "cinematic": "cubic-bezier(0.4, 0, 0.2, 1)",
+                "bounce-custom": "cubic-bezier(0.34, 1.56, 0.64, 1)",
             },
         },
     },

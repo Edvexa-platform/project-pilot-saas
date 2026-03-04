@@ -10,6 +10,7 @@ export const metadata: Metadata = {
 };
 
 import { AuthProvider } from "../components/AuthProvider";
+import { ThemeProvider } from "../components/ThemeProvider";
 
 export default function RootLayout({
   children,
@@ -17,9 +18,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <AuthProvider>{children}</AuthProvider>
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  const theme = localStorage.getItem('theme') || 'system';
+                  const darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
+                  const isDark = theme === 'dark' || (theme === 'system' && darkQuery.matches);
+                  document.documentElement.classList.toggle('dark', isDark);
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
+      <body className={`${inter.className} noise-overlay min-h-screen`}>
+        <ThemeProvider>
+          <AuthProvider>{children}</AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

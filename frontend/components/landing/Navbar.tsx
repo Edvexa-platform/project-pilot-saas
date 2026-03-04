@@ -8,6 +8,8 @@ import { Menu, X } from "lucide-react";
 import { useAuth } from "@/components/AuthProvider";
 import { Logo } from "@/components/ui/Logo";
 import { cn } from "@/lib/utils";
+import { ThemeToggle } from "../ThemeToggle";
+import { useDynamicBlur } from "@/hooks/useDynamicBlur";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,7 +18,10 @@ const Navbar = () => {
   const router = useRouter();
   const pathname = usePathname();
 
-  // Handle scroll effect
+  // Dynamic glass blur based on scroll
+  const blurValue = useDynamicBlur({ minBlur: 4, maxBlur: 20, scrollThreshold: 400 });
+
+  // Handle scroll effect for general state (like borders)
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
@@ -42,8 +47,13 @@ const Navbar = () => {
     <nav
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        scrolled ? "bg-background/80 backdrop-blur-md border-b" : "bg-transparent"
+        scrolled ? "border-b" : "border-b-transparent"
       )}
+      style={{
+        backdropFilter: `blur(${blurValue}px)`,
+        WebkitBackdropFilter: `blur(${blurValue}px)`,
+        backgroundColor: `rgba(var(--background-rgb), ${Math.min(0.8, 0.2 + (blurValue / 20) * 0.6)})`
+      }}
     >
       <div className="container mx-auto px-6 h-16 flex items-center justify-between">
         {/* Logo */}
@@ -64,6 +74,7 @@ const Navbar = () => {
 
         {/* Desktop CTA */}
         <div className="hidden md:flex items-center gap-4">
+          <ThemeToggle />
           {!loading && (
             <>
               {user ? (
@@ -103,6 +114,11 @@ const Navbar = () => {
       {isOpen && (
         <div className="md:hidden absolute top-16 left-0 right-0 bg-background border-b animate-in slide-in-from-top-5">
           <div className="flex flex-col p-4 gap-4">
+            <div className="flex items-center justify-between px-4">
+              <span className="text-sm font-medium text-muted-foreground">Theme</span>
+              <ThemeToggle />
+            </div>
+            <div className="h-px bg-border my-2" />
             {navLinks.map((link) => (
               <Link
                 key={link.name}
