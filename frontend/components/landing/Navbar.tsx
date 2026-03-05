@@ -9,7 +9,6 @@ import { useAuth } from "@/components/AuthProvider";
 import { Logo } from "@/components/ui/Logo";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "../ThemeToggle";
-import { useDynamicBlur } from "@/hooks/useDynamicBlur";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,10 +17,6 @@ const Navbar = () => {
   const router = useRouter();
   const pathname = usePathname();
 
-  // Dynamic glass blur based on scroll
-  const blurValue = useDynamicBlur({ minBlur: 4, maxBlur: 20, scrollThreshold: 400 });
-
-  // Handle scroll effect for general state (like borders)
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
@@ -41,63 +36,63 @@ const Navbar = () => {
     }
   };
 
-  if (pathname.startsWith("/dashboard")) return null; // Don't show this navbar on dashboard
+  if (pathname.startsWith("/dashboard")) return null;
 
   return (
     <nav
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        scrolled ? "border-b" : "border-b-transparent"
+        "fixed top-4 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 w-[calc(100%-2rem)] max-w-7xl",
+        scrolled ? "top-2" : "top-6"
       )}
-      style={{
-        backdropFilter: `blur(${blurValue}px)`,
-        WebkitBackdropFilter: `blur(${blurValue}px)`,
-        backgroundColor: `rgba(var(--background-rgb), ${Math.min(0.8, 0.2 + (blurValue / 20) * 0.6)})`
-      }}
     >
-      <div className="container mx-auto px-6 h-16 flex items-center justify-between">
+      <div className={cn(
+        "mx-auto h-16 px-6 flex items-center justify-between transition-all duration-500",
+        scrolled ? "glass rounded-2xl shadow-2xl shadow-black/5" : "bg-transparent"
+      )}>
         {/* Logo */}
-        <Logo onClick={handleLogoClick} />
+        <div className="flex items-center gap-10">
+          <Logo onClick={handleLogoClick} />
 
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              href={link.href}
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-            >
-              {link.name}
-            </Link>
-          ))}
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-8">
+            {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                className="text-xs font-bold tracking-widest uppercase text-muted-foreground hover:text-foreground transition-all duration-300"
+              >
+                {link.name}
+              </Link>
+            ))}
+          </div>
         </div>
 
         {/* Desktop CTA */}
-        <div className="hidden md:flex items-center gap-4">
+        <div className="hidden md:flex items-center gap-6">
           <ThemeToggle />
           {!loading && (
-            <>
+            <div className="flex items-center gap-3">
               {user ? (
                 <Link href="/dashboard">
-                  <Button variant="default" className="rounded-full px-6">
+                  <Button variant="default" className="rounded-full px-6 font-bold text-xs uppercase tracking-widest h-10 shadow-lg shadow-primary/20">
                     Dashboard
                   </Button>
                 </Link>
               ) : (
                 <>
                   <Link href="/login">
-                    <Button variant="ghost" className="text-muted-foreground hover:text-foreground">
+                    <button className="text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-foreground transition-all">
                       Log in
-                    </Button>
+                    </button>
                   </Link>
                   <Link href="/signup">
-                    <Button className="rounded-full px-6 bg-foreground text-background hover:bg-foreground/90">
+                    <Button className="rounded-full px-8 bg-primary text-primary-foreground hover:shadow-xl hover:shadow-primary/20 transition-all h-10 font-bold text-xs uppercase tracking-widest">
                       Get Started
                     </Button>
                   </Link>
                 </>
               )}
-            </>
+            </div>
           )}
         </div>
 
@@ -112,37 +107,37 @@ const Navbar = () => {
 
       {/* Mobile Navigation */}
       {isOpen && (
-        <div className="md:hidden absolute top-16 left-0 right-0 bg-background border-b animate-in slide-in-from-top-5">
-          <div className="flex flex-col p-4 gap-4">
-            <div className="flex items-center justify-between px-4">
-              <span className="text-sm font-medium text-muted-foreground">Theme</span>
+        <div className="md:hidden absolute top-20 left-0 right-0 glass rounded-2xl p-6 mx-4 animate-in fade-in slide-in-from-top-4 duration-500">
+          <div className="flex flex-col gap-6">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold tracking-widest uppercase text-muted-foreground">Theme</span>
               <ThemeToggle />
             </div>
-            <div className="h-px bg-border my-2" />
+            <div className="h-px bg-border/50" />
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 href={link.href}
                 onClick={() => setIsOpen(false)}
-                className="text-sm font-medium text-muted-foreground hover:text-foreground px-4 py-2"
+                className="text-sm font-bold tracking-widest uppercase text-muted-foreground hover:text-foreground"
               >
                 {link.name}
               </Link>
             ))}
-            <div className="h-px bg-border my-2" />
+            <div className="h-px bg-border/50" />
             {user ? (
               <Link href="/dashboard" onClick={() => setIsOpen(false)}>
-                <Button className="w-full">Dashboard</Button>
+                <Button className="w-full rounded-full uppercase text-xs font-bold tracking-widest">Dashboard</Button>
               </Link>
             ) : (
-              <>
+              <div className="flex flex-col gap-4">
                 <Link href="/login" onClick={() => setIsOpen(false)}>
-                  <Button variant="ghost" className="w-full justify-start">Log in</Button>
+                  <Button variant="ghost" className="w-full uppercase text-xs font-bold tracking-widest">Log in</Button>
                 </Link>
                 <Link href="/signup" onClick={() => setIsOpen(false)}>
-                  <Button className="w-full">Get Started</Button>
+                  <Button className="w-full rounded-full uppercase text-xs font-bold tracking-widest">Get Started</Button>
                 </Link>
-              </>
+              </div>
             )}
           </div>
         </div>
@@ -152,4 +147,5 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
 

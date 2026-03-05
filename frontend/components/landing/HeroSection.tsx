@@ -1,129 +1,116 @@
-import { Button } from "@/components/ui/button";
-import { ArrowRight, Play, Sparkles, FileText, Presentation, MessageSquare } from "lucide-react";
+"use client";
+
+import { motion } from "framer-motion";
+import { ArrowRight, Play, FileText, Presentation, MessageSquare } from "lucide-react";
 import { useState } from "react";
 import VideoModal from "@/components/ui/VideoModal";
-import { ParallaxWrapper } from "@/components/ParallaxWrapper";
-import { ParallaxLayer } from "@/components/ParallaxLayer";
 
 const HeroSection = () => {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+      },
+    },
+  };
+
   return (
-    <section className="relative min-h-screen overflow-hidden">
+    <section className="relative min-h-screen overflow-hidden flex items-center justify-center pt-20">
       <VideoModal isOpen={isVideoOpen} onClose={() => setIsVideoOpen(false)} videoUrl="/demo.webp" />
 
-      <ParallaxWrapper sensitivity={0.6} className="absolute inset-0">
-        {/* Layer 1: Deep Background Effects */}
-        <ParallaxLayer depth={5} scale={1.2} className="pointer-events-none">
-          <div className="absolute inset-0 bg-background" />
-        </ParallaxLayer>
+      {/* Decorative Background */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 grid-pattern opacity-50" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_0%,hsl(var(--primary)/0.08)_0%,transparent_50%)]" />
+        <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-primary/5 rounded-full blur-[120px] animate-pulse-slow" />
+        <div className="absolute -bottom-[10%] -right-[10%] w-[40%] h-[40%] bg-primary/5 rounded-full blur-[120px] animate-pulse-slow" />
+      </div>
 
-        {/* Layer 2: Grid and Slow Gradient Orbs */}
-        <ParallaxLayer depth={3} scale={1.1} className="pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] animate-pulse-slow" />
-          <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-accent/20 rounded-full blur-[100px] animate-pulse-slow" style={{ animationDelay: '2s' }} />
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,hsl(220_13%_15%/0.3)_1px,transparent_1px),linear-gradient(to_bottom,hsl(220_13%_15%/0.3)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)]" />
-        </ParallaxLayer>
+      <div className="container mx-auto px-4 relative z-10">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="max-w-5xl mx-auto text-center"
+        >
+          {/* Badge */}
+          <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass border border-white/20 mb-10">
+            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-xs font-bold tracking-widest uppercase text-foreground/80">AI-Powered Project Generation</span>
+          </motion.div>
 
-        {/* Layer 3: Main Glow */}
-        <ParallaxLayer depth={1.5} scale={1.05} className="pointer-events-none">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[150px]" />
+          {/* Main Heading */}
+          <motion.h1
+            variants={itemVariants}
+            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight mb-8 leading-[1.1]"
+          >
+            Your College Projects, <br />
+            <span className="gradient-text opacity-90 italic">Done Right</span>
+          </motion.h1>
 
-          {/* Ambient Particles */}
-          {Array.from({ length: 15 }).map((_, i) => (
-            <div
-              key={i}
-              className="glow-particle"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 5}s`,
-                animationDuration: `${10 + Math.random() * 10}s`
-              }}
-            />
-          ))}
-        </ParallaxLayer>
+          {/* Subheading */}
+          <motion.p
+            variants={itemVariants}
+            className="text-lg sm:text-xl text-muted-foreground/80 max-w-2xl mx-auto mb-12 leading-relaxed font-medium"
+          >
+            Generate complete academic projects with AI — from abstract to code to viva preparation.
+            Professionally formatted and ready for submission.
+          </motion.p>
 
-        {/* Layer 4: Foreground Content */}
-        <ParallaxLayer depth={0.8} scale={1}>
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex min-h-screen items-center justify-center pt-24 pb-12">
-            <div className="max-w-5xl mx-auto text-center">
-              {/* Badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-white/20 mb-8 animate-fade-in">
-                <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                <span className="text-sm font-medium text-foreground">AI-Powered Project Generation</span>
-              </div>
+          {/* CTA Buttons */}
+          <motion.div
+            variants={itemVariants}
+            className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-24"
+          >
+            <a href="/signup" className="btn-premium-primary group">
+              Start Building Free
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </a>
+            <button onClick={() => setIsVideoOpen(true)} className="btn-premium-outline group">
+              <Play className="w-5 h-5 fill-current group-hover:scale-110 transition-transform" />
+              Watch Demo
+            </button>
+          </motion.div>
 
-              {/* Main Heading */}
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-                Your College Projects,{" "}
-                <span className="gradient-text">Done Right</span>
-              </h1>
-
-              {/* Subheading */}
-              <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto mb-10 leading-relaxed animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-                Generate complete academic projects with AI — from abstract to code to viva preparation.
-                Get report-ready PDFs, professional PPTs, and ace your viva with our AI interviewer.
-              </p>
-
-              {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-                <a href="/signup">
-                  <Button variant="hero" size="xl">
-                    Start Building Free
-                    <ArrowRight className="w-5 h-5" />
-                  </Button>
-                </a>
-                <Button variant="hero-outline" size="xl" onClick={() => setIsVideoOpen(true)}>
-                  <Play className="w-5 h-5" />
-                  Watch Demo
-                </Button>
-              </div>
-
-              {/* Feature Cards Preview */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-                <div className="group p-6 rounded-2xl ios-card hover-lift hover-glow transition-all duration-300">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                    <FileText className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="font-semibold text-foreground mb-2">Complete Reports</h3>
-                  <p className="text-sm text-muted-foreground">Auto-generated PDFs with all sections your college needs</p>
+          {/* Feature Grid */}
+          <motion.div
+            variants={itemVariants}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto"
+          >
+            {[
+              { icon: FileText, title: "Complete Reports", desc: "Auto-generated PDFs with all mandatory sections", color: "from-blue-500/20" },
+              { icon: Presentation, title: "Pro Presentations", desc: "Sleek, professional PPTs ready for your defense", color: "from-purple-500/20" },
+              { icon: MessageSquare, title: "Viva Assistant", desc: "AI-powered mock interviews to boost your confidence", color: "from-pink-500/20" },
+            ].map((feature, i) => (
+              <div key={i} className="group premium-card text-left">
+                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${feature.color} to-transparent flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500`}>
+                  <feature.icon className="w-6 h-6 text-foreground/80" />
                 </div>
-
-                <div className="group p-6 rounded-2xl ios-card hover-lift transition-all duration-300" style={{ transitionDelay: '50ms' }}>
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-accent/30 to-accent/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                    <Presentation className="w-6 h-6 text-accent" />
-                  </div>
-                  <h3 className="font-semibold text-foreground mb-2">Pro Presentations</h3>
-                  <p className="text-sm text-muted-foreground">Beautiful PPTs ready for your final submissions</p>
-                </div>
-
-                <div className="group p-6 rounded-2xl ios-card hover-lift transition-all duration-300" style={{ transitionDelay: '100ms' }}>
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-pink-500/30 to-pink-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                    <MessageSquare className="w-6 h-6 text-pink-400" />
-                  </div>
-                  <h3 className="font-semibold text-foreground mb-2">Viva Assistant</h3>
-                  <p className="text-sm text-muted-foreground">AI-powered mock interviews to ace your viva</p>
-                </div>
+                <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
+                <p className="text-muted-foreground leading-relaxed text-sm">{feature.desc}</p>
               </div>
-
-              {/* Trust Indicators */}
-              <div className="mt-16 animate-fade-in-up" style={{ animationDelay: '0.5s' }}>
-                <p className="text-sm text-muted-foreground mb-6">Trusted by students from</p>
-                <div className="flex flex-wrap items-center justify-center gap-8">
-                  {["IIT Delhi", "VIT", "SRM", "BITS", "NIT"].map((college) => (
-                    <span key={college} className="text-lg font-semibold text-muted-foreground/60 hover:text-muted-foreground transition-colors">
-                      {college}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </ParallaxLayer>
-      </ParallaxWrapper>
+            ))}
+          </motion.div>
+        </motion.div>
+      </div>
     </section>
   );
 };
 
 export default HeroSection;
+

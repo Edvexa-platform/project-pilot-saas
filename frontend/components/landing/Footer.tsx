@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { Sparkles, Mail, Twitter, Linkedin, Github } from "lucide-react";
+import { motion } from "framer-motion";
 
 const Footer = () => {
   const footerLinks = {
@@ -16,115 +19,75 @@ const Footer = () => {
       { name: "Contact", href: "#" },
     ],
     legal: [
-      { name: "Privacy Policy", href: "#" },
-      { name: "Terms of Service", href: "#" },
-      { name: "Refund Policy", href: "#" },
-    ],
-    support: [
-      { name: "Help Center", href: "#" },
-      { name: "Community", href: "#" },
-      { name: "Status", href: "#" },
+      { name: "Privacy", href: "#" },
+      { name: "Terms", href: "#" },
     ],
   };
 
   return (
-    <footer className="border-t border-white/10 bg-card/50 backdrop-blur-xl">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-2 md:grid-cols-6 gap-8 lg:gap-12">
+    <footer className="relative border-t border-border/50 pt-24 pb-12 overflow-hidden">
+      <div className="absolute inset-0 bg-background z-0" />
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-12 mb-20">
           {/* Brand */}
-          <div className="col-span-2">
-            <Link href="/" className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg">
-                <Sparkles className="w-5 h-5 text-white" />
+          <div className="col-span-1 lg:col-span-2">
+            <Link href="/" className="flex items-center gap-3 mb-8 group">
+              <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center shadow-2xl group-hover:scale-105 transition-transform duration-500">
+                <Sparkles className="w-5 h-5 text-primary-foreground" />
               </div>
-              <span className="text-lg font-bold text-foreground tracking-tight">
-                Project<span className="gradient-text">Pilot</span>
+              <span className="text-xl font-extrabold tracking-tighter text-foreground">
+                PROJECT<span className="gradient-text">PILOT</span>
               </span>
             </Link>
-            <p className="text-sm text-muted-foreground mb-6 max-w-xs leading-relaxed">
-              AI-powered college project generator and viva assistant. Transform your academic journey today.
+            <p className="text-muted-foreground/80 leading-relaxed font-medium max-w-sm mb-10">
+              Transforming the academic journey with clinical-grade AI generators. Built for the modern student.
             </p>
             {/* Social Links */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-4">
               {[
                 { icon: Twitter, href: "#" },
                 { icon: Linkedin, href: "#" },
                 { icon: Github, href: "#" },
                 { icon: Mail, href: "#" },
               ].map((social, index) => (
-                <a
+                <motion.a
                   key={index}
                   href={social.href}
-                  className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-white/10 hover:border-white/20 transition-all duration-200"
+                  whileHover={{ y: -3 }}
+                  className="w-10 h-10 rounded-xl glass border border-white/10 flex items-center justify-center text-muted-foreground hover:text-foreground transition-all duration-300 shadow-sm"
                 >
                   <social.icon className="w-4 h-4" />
-                </a>
+                </motion.a>
               ))}
             </div>
           </div>
 
           {/* Links */}
-          <div>
-            <h4 className="font-semibold text-foreground mb-4 text-sm">Product</h4>
-            <ul className="space-y-3">
-              {footerLinks.product.map((link) => (
-                <li key={link.name}>
-                  <a href={link.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                    {link.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-semibold text-foreground mb-4 text-sm">Company</h4>
-            <ul className="space-y-3">
-              {footerLinks.company.map((link) => (
-                <li key={link.name}>
-                  <a href={link.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                    {link.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-semibold text-foreground mb-4 text-sm">Legal</h4>
-            <ul className="space-y-3">
-              {footerLinks.legal.map((link) => (
-                <li key={link.name}>
-                  <a href={link.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                    {link.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-semibold text-foreground mb-4 text-sm">Support</h4>
-            <ul className="space-y-3">
-              {footerLinks.support.map((link) => (
-                <li key={link.name}>
-                  <a href={link.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                    {link.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {Object.entries(footerLinks).map(([title, links]) => (
+            <div key={title}>
+              <h4 className="text-[10px] font-bold tracking-widest uppercase text-foreground/40 mb-8">{title}</h4>
+              <ul className="space-y-4">
+                {links.map((link) => (
+                  <li key={link.name}>
+                    <a href={link.href} className="text-sm font-bold text-muted-foreground hover:text-foreground transition-all duration-300">
+                      {link.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
 
         {/* Bottom */}
-        <div className="mt-16 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} ProjectPilot AI. All rights reserved.
+        <div className="pt-12 border-t border-border/50 flex flex-col md:flex-row items-center justify-between gap-6 opacity-60">
+          <p className="text-xs font-bold tracking-widest uppercase text-muted-foreground">
+            © {new Date().getFullYear()} ProjectPilot AI. Engineered with precision.
           </p>
-          <p className="text-sm text-muted-foreground">
-            Made with ❤️ for students everywhere
-          </p>
+          <div className="flex items-center gap-8">
+            <span className="text-xs font-bold tracking-widest uppercase">Safe & Secure</span>
+            <span className="text-xs font-bold tracking-widest uppercase">Privacy Focused</span>
+          </div>
         </div>
       </div>
     </footer>
@@ -132,3 +95,4 @@ const Footer = () => {
 };
 
 export default Footer;
+
