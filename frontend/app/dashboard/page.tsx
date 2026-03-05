@@ -8,11 +8,23 @@ import VivaAssistant from "../../components/VivaAssistant";
 import DownloadButton from "../../components/DownloadButton";
 import { api } from "../../services/api";
 import Link from "next/link";
-import { LogOut, Sparkles, FileText, Download, Code, MonitorPlay, Settings } from "lucide-react";
+import { Sparkles, FileText, MonitorPlay } from "lucide-react";
+import { ProjectCard } from "../../components/ProjectCard";
+import { Button } from "../../components/ui/button";
+import { useEffect } from "react";
+
+import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
+    const router = useRouter();
     const [project, setProject] = useState<any>(null);
+    const [savedProjects, setSavedProjects] = useState<any[]>([]);
     const { user } = useAuth();
+
+    useEffect(() => {
+        const projects = JSON.parse(localStorage.getItem('user_projects') || '[]');
+        setSavedProjects(projects);
+    }, []);
 
     return (
         <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-5 duration-700">
@@ -23,7 +35,7 @@ export default function Dashboard() {
                     <p className="text-muted-foreground mt-1">Welcome back, {user?.name || user?.email?.split('@')[0] || 'Creator'}</p>
                 </div>
                 <div className="flex items-center gap-2">
-                    <Link href="/dashboard/new">
+                    <Link href="/dashboard/new-project">
                         <div className="bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 shadow-sm">
                             <Sparkles className="w-4 h-4" />
                             New Project
@@ -44,9 +56,10 @@ export default function Dashboard() {
                     </div>
                 </div>
 
-                {/* Right Column: Result */}
-                <div className="lg:col-span-8">
-                    {project ? (
+                {/* Right Column: Result & Project List */}
+                <div className="lg:col-span-8 space-y-8">
+                    {/* Active Generated Project (High priority) */}
+                    {project && (
                         <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
                             <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden">
                                 <div className="p-6 border-b bg-muted/30">
@@ -78,7 +91,7 @@ export default function Dashboard() {
                                     </div>
                                     <div className="space-y-2">
                                         <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
-                                            <Layers className="w-4 h-4" />
+                                            <LayersIcon className="w-4 h-4" />
                                             Architecture
                                         </h3>
                                         <p className="text-sm leading-relaxed text-foreground/80">{project.architecture_description}</p>
@@ -107,20 +120,51 @@ export default function Dashboard() {
                                 </div>
                             </div>
 
-                            {/* Viva Assistant */}
                             <VivaAssistant projectData={project} />
                         </div>
-                    ) : (
-                        <div className="h-full min-h-[400px] rounded-xl border-2 border-dashed border-muted-foreground/20 bg-muted/5 flex flex-col items-center justify-center text-center p-12">
-                            <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
-                                <MonitorPlay className="w-8 h-8 text-muted-foreground" />
-                            </div>
-                            <h3 className="text-lg font-medium mb-1">No Project Generated</h3>
-                            <p className="text-sm text-muted-foreground max-w-sm">
-                                Use the generator form to create your next AI project.
-                            </p>
-                        </div>
                     )}
+
+                    {/* Saved Projects List */}
+                    <div className="space-y-6">
+                        <div className="flex items-center justify-between">
+                            <h2 className="text-xl font-bold flex items-center gap-2">
+                                <MonitorPlay className="w-5 h-5 text-primary" />
+                                My Projects
+                            </h2>
+                            <span className="text-xs font-medium text-muted-foreground bg-muted px-2 py-1 rounded-md">
+                                {savedProjects.length} Total
+                            </span>
+                        </div>
+
+                        {savedProjects.length > 0 ? (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                {savedProjects.map((proj: any) => (
+                                    <ProjectCard
+                                        key={proj.id}
+                                        title={proj.title}
+                                        category={proj.category}
+                                        createdAt={proj.created_at}
+                                        onOpen={() => router.push(`/dashboard/new-project?id=${proj.id}`)}
+                                    />
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="h-full min-h-[300px] rounded-2xl border-2 border-dashed border-muted-foreground/20 bg-muted/5 flex flex-col items-center justify-center text-center p-12">
+                                <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
+                                    <MonitorPlay className="w-8 h-8 text-muted-foreground" />
+                                </div>
+                                <h3 className="text-lg font-medium mb-1">No saved projects</h3>
+                                <p className="text-sm text-muted-foreground max-w-sm mb-6">
+                                    Your manually created and saved projects will appear here.
+                                </p>
+                                <Link href="/dashboard/new-project">
+                                    <Button variant="outline" className="rounded-full">
+                                        Create your first project
+                                    </Button>
+                                </Link>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>
@@ -128,7 +172,7 @@ export default function Dashboard() {
 }
 
 // Icon for architecture
-function Layers(props: any) {
+function LayersIcon(props: any) {
     return (
         <svg
             {...props}
