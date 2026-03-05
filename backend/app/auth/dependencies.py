@@ -17,4 +17,14 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
     user = db.query(User).filter(User.email == token_data.email).first()
     if user is None:
         raise credentials_exception
+    if user.account_status != "active":
+        raise HTTPException(status_code=403, detail="Account is suspended or inactive")
     return user
+
+def get_admin_user(current_user: User = Depends(get_current_user)):
+    if current_user.role != "admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="The user doesn't have enough privileges"
+        )
+    return current_user

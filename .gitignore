@@ -38,3 +38,8 @@ backend/htmlcov/
 
 # OS
 Thumbs.db
+
+# Secrets
+key.txt
+.env*
+**/key.txt

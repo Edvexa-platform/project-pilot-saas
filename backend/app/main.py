@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import engine, Base
 from app.api import auth, users, projects, viva
+from app import models
 
 # Create Tables
 Base.metadata.create_all(bind=engine)

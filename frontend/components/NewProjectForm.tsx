@@ -6,14 +6,15 @@ import { Sparkles, Calendar, Tag, Layers, FileText, X, Check } from 'lucide-reac
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { api } from '@/services/api';
 
 interface NewProjectFormProps {
     initialData?: {
-        id?: string;
+        id?: number;
         title: string;
         description: string;
         category: string;
-        techStack: string;
+        tech_stack: string;
         deadline: string;
     };
     isEdit?: boolean;
@@ -26,7 +27,7 @@ export const NewProjectForm = ({ initialData, isEdit = false }: NewProjectFormPr
         title: initialData?.title || '',
         description: initialData?.description || '',
         category: initialData?.category || '',
-        techStack: initialData?.techStack || '',
+        tech_stack: initialData?.tech_stack || '',
         deadline: initialData?.deadline || '',
     });
 
@@ -35,33 +36,25 @@ export const NewProjectForm = ({ initialData, isEdit = false }: NewProjectFormPr
         "IoT", "Cybersecurity", "Blockchain", "Data Science"
     ];
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!formData.title || !formData.category) return;
 
         setLoading(true);
 
-        // Save to localStorage
-        const existingProjects = JSON.parse(localStorage.getItem('user_projects') || '[]');
-
-        if (isEdit && initialData?.id) {
-            const updatedProjects = existingProjects.map((p: any) =>
-                p.id === initialData.id ? { ...p, ...formData, updated_at: Date.now() } : p
-            );
-            localStorage.setItem('user_projects', JSON.stringify(updatedProjects));
-        } else {
-            const newProject = {
-                id: crypto.randomUUID(),
-                ...formData,
-                created_at: Date.now(),
-            };
-            localStorage.setItem('user_projects', JSON.stringify([newProject, ...existingProjects]));
-        }
-
-        setTimeout(() => {
+        try {
+            if (isEdit && initialData?.id) {
+                await api.updateProject(initialData.id, formData);
+            } else {
+                await api.createProject(formData);
+            }
             setLoading(false);
-            router.push('/dashboard');
-        }, 800);
+            router.push('/dashboard?refresh=true');
+        } catch (error) {
+            console.error("Save failed:", error);
+            setLoading(false);
+            alert("Failed to save project. Please check your connection.");
+        }
     };
 
     return (
@@ -119,8 +112,8 @@ export const NewProjectForm = ({ initialData, isEdit = false }: NewProjectFormPr
                             id="techStack"
                             placeholder="e.g. React, Python, OpenCV"
                             className="pl-10 bg-white/50 dark:bg-zinc-900/50"
-                            value={formData.techStack}
-                            onChange={(e) => setFormData({ ...formData, techStack: e.target.value })}
+                            value={formData.tech_stack}
+                            onChange={(e) => setFormData({ ...formData, tech_stack: e.target.value })}
                             required
                         />
                     </div>

@@ -22,8 +22,15 @@ export default function Dashboard() {
     const { user } = useAuth();
 
     useEffect(() => {
-        const projects = JSON.parse(localStorage.getItem('user_projects') || '[]');
-        setSavedProjects(projects);
+        const fetchProjects = async () => {
+            try {
+                const data = await api.getProjects();
+                setSavedProjects(data);
+            } catch (error) {
+                console.error("Failed to fetch projects:", error);
+            }
+        };
+        fetchProjects();
     }, []);
 
     return (

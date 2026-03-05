@@ -8,6 +8,7 @@ import { Logo } from "@/components/ui/Logo";
 
 export default function SignupPage() {
     const { signup } = useAuth();
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -18,7 +19,7 @@ export default function SignupPage() {
         setError("");
         setLoading(true);
         try {
-            await signup(email, password);
+            await signup(email, password, name);
         } catch (err: any) {
             setError(err.message || "Registration failed. Please try again.");
         } finally {
@@ -57,6 +58,25 @@ export default function SignupPage() {
                     )}
 
                     <form onSubmit={handleSubmit} className="space-y-5">
+                        <div className="space-y-2">
+                            <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider ml-1">
+                                Full Name
+                            </label>
+                            <div className="relative group">
+                                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors">
+                                    <UserPlus className="w-5 h-5 transition-transform group-focus-within:scale-110" />
+                                </div>
+                                <input
+                                    type="text"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    className="w-full bg-secondary/50 border border-border rounded-xl py-3 pl-10 pr-4 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all duration-200"
+                                    placeholder="John Doe"
+                                    required
+                                />
+                            </div>
+                        </div>
+
                         <div className="space-y-2">
                             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider ml-1">
                                 Email
