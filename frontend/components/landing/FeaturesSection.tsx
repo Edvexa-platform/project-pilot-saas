@@ -9,90 +9,66 @@ import {
   Brain,
   Download,
   Shield,
-  Zap
+  Zap,
+  Sparkles
 } from "lucide-react";
-import { PremiumCard } from "../PremiumCard";
 
 const features = [
   {
     icon: Brain,
     title: "AI Project Generator",
-    description: "Enter your topic and get a complete project with abstract, methodology, architecture, and results.",
-    gradient: "from-blue-500/20 to-transparent",
+    description: "Multi-model AI architecture that builds projects from abstract to final conclusion in seconds.",
+    gradient: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
   },
   {
     icon: FileText,
     title: "Academic Reports",
-    description: "Auto-generate IEEE/university format reports with all required sections and citations.",
-    gradient: "from-pink-500/20 to-transparent",
+    description: "Generate IEEE, APA, or University-specific formatted reports with auto-citations.",
+    gradient: "bg-purple-500/10 text-purple-600 dark:text-purple-400",
   },
   {
     icon: Presentation,
     title: "Professional PPTs",
-    description: "Beautiful presentation slides that follow academic standards and impress evaluators.",
-    gradient: "from-emerald-500/20 to-transparent",
+    description: "Visual-first presentation slides designed to impress academic panels and evaluators.",
+    gradient: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
   },
   {
     icon: Code,
-    title: "Source Code",
-    description: "Get working, well-commented code ready to run and submit on GitHub.",
-    gradient: "from-amber-500/20 to-transparent",
+    title: "Working Source Code",
+    description: "Clean, production-ready code generation with documentation and setup guides.",
+    gradient: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
   },
   {
     icon: MessageSquare,
     title: "Viva Preparation",
-    description: "AI interviewer simulates real viva questions based on your project and department.",
-    gradient: "from-rose-500/20 to-transparent",
+    description: "Predictive AI viva coach that prepares you for common and technical defense questions.",
+    gradient: "bg-rose-500/10 text-rose-600 dark:text-rose-400",
   },
   {
     icon: Download,
-    title: "One-Click Downloads",
-    description: "Export everything — PDF reports, PPTX, source code ZIP — in seconds.",
-    gradient: "from-teal-500/20 to-transparent",
+    title: "Export Ecosystem",
+    description: "Download entire project bundles including code, PDF, and PPTX in one click.",
+    gradient: "bg-teal-500/10 text-teal-600 dark:text-teal-400",
   },
   {
     icon: Shield,
-    title: "Plagiarism-Safe",
-    description: "Unique content generated for each project, ready for submission.",
-    gradient: "from-indigo-500/20 to-transparent",
+    title: "Plagiarism-Unique",
+    description: "Every generation is thermodynamically unique to ensure academic integrity.",
+    gradient: "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400",
   },
   {
     icon: Zap,
-    title: "Instant Results",
-    description: "Get your complete project bundle in under 5 minutes, not days.",
-    gradient: "from-yellow-500/20 to-transparent",
+    title: "Sub-5m Delivery",
+    description: "From concept to full project delivery in under 5 minutes. Guaranteed speed.",
+    gradient: "bg-primary/10 text-primary dark:text-primary",
   },
 ];
 
 const FeaturesSection = () => {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-      },
-    },
-  };
-
   return (
-    <section id="features" className="py-32 relative overflow-hidden bg-background">
-      {/* Background Orbs */}
-      <div className="absolute top-1/2 left-1/4 w-[500px] h-[500px] bg-primary/2 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-primary/2 rounded-full blur-[100px] pointer-events-none" />
+    <section id="features" className="py-24 md:py-32 relative overflow-hidden bg-background">
+      <div className="container mx-auto px-6 relative z-10 max-w-7xl">
 
-      <div className="container mx-auto px-6 relative z-10">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -101,51 +77,52 @@ const FeaturesSection = () => {
           transition={{ duration: 0.8 }}
           className="text-center max-w-3xl mx-auto mb-20"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass border border-white/20 mb-6">
-            <Zap className="w-3 h-3 text-primary" />
-            <span className="text-[10px] font-bold tracking-widest uppercase text-foreground/80">Premium Features</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border bg-white dark:bg-card mb-6 shadow-sm">
+            <Sparkles className="w-4 h-4 text-secondary" />
+            <span className="text-xs font-bold tracking-widest uppercase text-foreground/80">Core Intelligence</span>
           </div>
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-foreground mb-8 tracking-tight leading-tight">
-            Everything You Need to <br />
-            <span className="gradient-text opacity-90">Ace Your Project</span>
+          <h2 className="text-4xl sm:text-5xl font-extrabold text-foreground mb-6 tracking-tight leading-tight">
+            The AI Suite for <br />
+            <span className="gradient-text">World-Class Projects</span>
           </h2>
-          <p className="text-lg text-muted-foreground/80 leading-relaxed font-medium">
-            From ideation to viva, ProjectPilot AI handles every step of your academic project journey with clinical precision.
+          <p className="text-lg text-muted-foreground font-medium leading-relaxed">
+            ProjectPilot engineering combines advanced LLMs with academic formatting engines to produce industry-standard results.
           </p>
         </motion.div>
 
         {/* Features Grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature, index) => {
             const Icon = feature.icon;
 
             return (
-              <motion.div key={index} variants={itemVariants}>
-                <PremiumCard className="h-full group">
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500`}>
-                    <Icon className="w-6 h-6 text-foreground/80" />
-                  </div>
-                  <h3 className="text-lg font-bold text-foreground mb-3 tracking-tight">
-                    {feature.title}
-                  </h3>
-                  <p className="text-sm text-muted-foreground/80 leading-relaxed font-medium">
-                    {feature.description}
-                  </p>
-                </PremiumCard>
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="saas-card h-full flex flex-col group cursor-default"
+              >
+                <div className={`w-14 h-14 rounded-2xl ${feature.gradient} flex items-center justify-center mb-8 transition-transform duration-500 group-hover:rotate-6 group-hover:scale-110 shadow-sm`}>
+                  <Icon className="w-7 h-7" />
+                </div>
+                <h3 className="text-xl font-extrabold text-foreground mb-4 tracking-tight">
+                  {feature.title}
+                </h3>
+                <p className="text-base text-muted-foreground font-medium leading-relaxed">
+                  {feature.description}
+                </p>
               </motion.div>
             );
           })}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
 };
 
 export default FeaturesSection;
+
+
 
