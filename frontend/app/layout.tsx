@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: '--font-plus-jakarta'
+});
 
 export const metadata: Metadata = {
-  title: "AI Project Generator",
-  description: "Industry-ready AI Project Generator & Viva Assistant",
+  title: "ProjectPilot | AI College Project Generator",
+  description: "Industry-ready AI Project Generator & Viva Assistant. Generate reports, presentations, and code in minutes.",
 };
 
 import { AuthProvider } from "../components/AuthProvider";
@@ -18,7 +21,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={plusJakartaSans.variable}>
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -35,7 +38,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${inter.className} noise-overlay min-h-screen`}>
+      <body className={`${plusJakartaSans.className} noise-overlay min-h-screen font-sans`}>
         <ThemeProvider>
           <AuthProvider>{children}</AuthProvider>
         </ThemeProvider>
@@ -43,3 +46,4 @@ export default function RootLayout({
     </html>
   );
 }
+
