@@ -26,7 +26,7 @@ const getToken = () => typeof window !== 'undefined' ? localStorage.getItem('tok
 const authHeaders = () => ({
     "Content-Type": "application/json",
     "Authorization": `Bearer ${getToken()}`
-})
+});
 
 export const api = {
     // Auth
